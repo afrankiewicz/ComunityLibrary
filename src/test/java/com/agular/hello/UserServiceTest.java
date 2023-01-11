@@ -8,7 +8,7 @@ import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
 
-public class UserServiceTest extends HelloApplicationTests {
+public class UserServiceTest extends CommunityLibraryApplicationTests {
 
     @Autowired
     UserService userService;
@@ -16,7 +16,7 @@ public class UserServiceTest extends HelloApplicationTests {
     @Test
     public void shouldAddUser() {
         // given
-        User user = createUser();
+        User user = createUser(registeredUserEmail);
         // when
         userService.addUser(user);
         // then

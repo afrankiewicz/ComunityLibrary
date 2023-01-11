@@ -1,6 +1,6 @@
 package com.agular.hello;
 
-import com.agular.hello.entity.Book;
+import com.agular.hello.entity.BookModel;
 import com.agular.hello.exceptions.BadRequestException;
 import com.agular.hello.repositiry.BookRepository;
 import com.agular.hello.service.BookService;
@@ -9,7 +9,7 @@ import org.junit.Assert;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
-public class BookServiceTest extends HelloApplicationTests {
+public class BookServiceTest extends CommunityLibraryApplicationTests {
 
     @Autowired
     BookService bookService;
@@ -19,7 +19,7 @@ public class BookServiceTest extends HelloApplicationTests {
     @Test
     public void shouldRegisterBook(){
         // when
-        Book book = bookService.registerBook(createBook(), createRegisteredUser().getEmail());
+        BookModel book = bookService.registerBook(createBook(), createRegisteredUser().getEmail());
         // then
         Assert.assertNotNull(book.getOwner());
         Assert.assertNotNull(book.getId());
@@ -28,8 +28,8 @@ public class BookServiceTest extends HelloApplicationTests {
     @Test(expected = BadRequestException.class)
     public void shouldNotRegisterBook(){
         // given
-        Book book = createRegisteredBook();
-        Book book2 = new Book(book.getIsbn(), RandomString.make(),
+        BookModel book = createRegisteredBook();
+        BookModel book2 = new BookModel(book.getIsbn(), RandomString.make(),
                 RandomString.make(), RandomString.make());
         // when
         bookService.registerBook(book2, createRegisteredUser().getEmail());
@@ -38,9 +38,9 @@ public class BookServiceTest extends HelloApplicationTests {
     @Test
     public void shouldBorrowBook(){
         // given
-        Book registeredBook = createRegisteredBook();
+        BookModel registeredBook = createRegisteredBook();
         // when
-        Book borrowedBook = bookService.borrowBook(registeredBook.getId(), createRegisteredUser().getEmail());
+        BookModel borrowedBook = bookService.borrowBook(registeredBook.getId(), createRegisteredUser().getEmail());
         // then
         Assert.assertNotNull(borrowedBook.getBorrower());
         Assert.assertNotNull(borrowedBook.getReturnDate());
@@ -49,7 +49,7 @@ public class BookServiceTest extends HelloApplicationTests {
     @Test(expected = BadRequestException.class)
     public void shouldNotBorrowBookWhenBookAlreadyBorrowed() {
         // given
-        Book registeredBook = createRegisteredBook();
+        BookModel registeredBook = createRegisteredBook();
         bookService.borrowBook(registeredBook.getId(), createRegisteredUser().getEmail());
         // when
         bookService.borrowBook(registeredBook.getId(), createRegisteredUser().getEmail());
@@ -58,7 +58,7 @@ public class BookServiceTest extends HelloApplicationTests {
     @Test(expected = BadRequestException.class)
     public void shouldNotBorrowBookWhenBookBelongsToBorrower() {
         // given
-        Book registeredBook = createRegisteredBook();
+        BookModel registeredBook = createRegisteredBook();
         // when
         bookService.borrowBook(registeredBook.getId(), registeredBook.getOwner().getEmail());
     }
@@ -66,8 +66,8 @@ public class BookServiceTest extends HelloApplicationTests {
     @Test
     public void shouldReturnBook(){
         // given
-        Book registeredBook = createRegisteredBook();
-        Book borrowedBook = bookService.borrowBook(registeredBook.getId(), createRegisteredUser().getEmail());
+        BookModel registeredBook = createRegisteredBook();
+        BookModel borrowedBook = bookService.borrowBook(registeredBook.getId(), createRegisteredUser().getEmail());
         // when
         bookService.returnBook(borrowedBook.getId(), borrowedBook.getBorrower().getEmail());
         // then
@@ -78,7 +78,7 @@ public class BookServiceTest extends HelloApplicationTests {
     @Test(expected = BadRequestException.class)
     public void shouldNotReturnBookWhenBookIsNotBorrowed() {
         // given
-        Book registeredBook = createRegisteredBook();
+        BookModel registeredBook = createRegisteredBook();
         // when
         bookService.returnBook(registeredBook.getId(), createRegisteredUser().getEmail());
     }
@@ -86,7 +86,7 @@ public class BookServiceTest extends HelloApplicationTests {
     @Test(expected = BadRequestException.class)
     public void shouldNotReturnBookWhenBookNotBorrowedByReturner() {
         // given
-        Book registeredBook = createRegisteredBook();
+        BookModel registeredBook = createRegisteredBook();
         bookService.borrowBook(registeredBook.getId(), createRegisteredUser().getEmail());
         // when
         bookService.returnBook(registeredBook.getId(), createRegisteredUser().getEmail());

@@ -1,6 +1,6 @@
 package com.agular.hello;
 
-import com.agular.hello.entity.Book;
+import com.agular.hello.entity.BookModel;
 import com.agular.hello.entity.User;
 import com.agular.hello.repositiry.BookRepository;
 import com.agular.hello.repositiry.UserRepository;
@@ -14,7 +14,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 
 @SpringBootTest
 @RunWith(SpringRunner.class)
-class HelloApplicationTests {
+class CommunityLibraryApplicationTests {
 
 	@Autowired
 	UserService userService;
@@ -25,20 +25,30 @@ class HelloApplicationTests {
 	@Autowired
 	BCryptPasswordEncoder bCryptPasswordEncoder;
 
-	public User createUser(){
-		return new User(RandomString.make(), RandomString.make(), RandomString.make() + "@gmail.com",
+	protected final String registeredUserEmail = "test@testmail.com";
+
+	public void cleanupDb(){
+		bookRepository.deleteAll();
+		userRepository.deleteAll();
+	}
+	public User createUser(String email){
+		return new User(RandomString.make(), RandomString.make(), email,
 				RandomString.make(), RandomString.make(), RandomString.make());
 	}
 	public User createRegisteredUser(){
-		return userRepository.save(createUser());
+		return userRepository.save(createUser(RandomString.make() + "@gmail.com"));
 	}
-	public Book createBook(){
-		return new Book(RandomString.make(), RandomString.make(), RandomString.make(),
+
+	public User createRegisteredUser(String email){
+		return userRepository.save(createUser(email));
+	}
+	public BookModel createBook(){
+		return new BookModel(RandomString.make(), RandomString.make(), RandomString.make(),
 				RandomString.make());
 	}
 
-	public Book createRegisteredBook(){
-		Book book = createBook();
+	public BookModel createRegisteredBook(){
+		BookModel book = createBook();
 		book.setOwner(createRegisteredUser());
 		return bookRepository.save(book);
 	}
