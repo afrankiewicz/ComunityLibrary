@@ -1,41 +1,38 @@
 package com.agular.hello.service;
 
-import com.agular.hello.entity.User;
+import com.agular.hello.DTO.UserDto;
 import com.agular.hello.exceptions.BadRequestException;
-import com.agular.hello.repositiry.BookRepository;
 import com.agular.hello.repositiry.UserRepository;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import java.util.Optional;
-
 @Service
 public class UserService {
 
-    private UserRepository userRepository;
-    private BookRepository bookRepository;
-    private BCryptPasswordEncoder bCryptPasswordEncoder;
+    private final UserRepository userRepository;
+    private final BCryptPasswordEncoder bCryptPasswordEncoder;
 
-    public UserService(UserRepository userRepository, BookRepository bookRepository, BCryptPasswordEncoder bCryptPasswordEncoder) {
+    public UserService(UserRepository userRepository, BCryptPasswordEncoder bCryptPasswordEncoder) {
         this.userRepository = userRepository;
-        this.bookRepository = bookRepository;
         this.bCryptPasswordEncoder = bCryptPasswordEncoder;
     }
 
-    public Optional<User> getUser(Long id){
-        return userRepository.findById(id);
+    public UserDto getUser(Long id){
+        return userRepository.findById(id)
+                .orElseThrow(() -> new BadRequestException("User not found")).toDto();
     }
 
-    public Optional<User> getUserByEmail(String email){
-        return userRepository.findByEmail(email);
+    public UserDto getUserByEmail(String email){
+        return userRepository.findByEmail(email)
+                .orElseThrow(() -> new BadRequestException("User not found")).toDto();
     }
 
-    public User addUser(User user){
+    public UserDto addUser(UserDto user){
         if (userRepository.existsByEmail(user.getEmail())){
             throw new BadRequestException(String.format("User with email: '%s' already exists.", user.getEmail()));
         }
         user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
-        return userRepository.save(user);
+        return userRepository.save(user.toModel()).toDto();
     }
 
 }

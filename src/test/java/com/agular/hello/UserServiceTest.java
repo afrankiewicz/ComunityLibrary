@@ -1,6 +1,6 @@
 package com.agular.hello;
 
-import com.agular.hello.entity.User;
+import com.agular.hello.DTO.UserDto;
 import com.agular.hello.exceptions.BadRequestException;
 import com.agular.hello.service.UserService;
 import org.junit.Assert;
@@ -15,19 +15,15 @@ public class UserServiceTest extends CommunityLibraryApplicationTests {
 
     @Test
     public void shouldAddUser() {
-        // given
-        User user = createUser(registeredUserEmail);
-        // when
-        userService.addUser(user);
-        // then
-        Assert.assertTrue(userService.getUser(user.getId()).isPresent());
+        UserDto user = userService.addUser(createUser(registeredUserEmail));
+
+        Assert.assertEquals(userService.getUser(user.getId()).getId(), user.getId());
     }
 
     @Test(expected = BadRequestException.class)
     public void shouldNotAddUserWhenEmailAlreadyUsed(){
-        // given
-        User user = createRegisteredUser();
-        // when
+        UserDto user = createRegisteredUser();
+
         userService.addUser(user);
     }
 

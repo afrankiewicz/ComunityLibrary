@@ -1,7 +1,8 @@
 package com.agular.hello.service;
 
-import com.agular.hello.entity.Book;
-import com.agular.hello.entity.User;
+import com.agular.hello.DTO.BookDto;
+import com.agular.hello.DTO.UserDto;
+import com.agular.hello.entity.BookModel;
 import com.agular.hello.exceptions.BadRequestException;
 import com.agular.hello.repositiry.BookRepository;
 import com.agular.hello.repositiry.UserRepository;
@@ -9,6 +10,7 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class BookService {
@@ -21,16 +23,16 @@ public class BookService {
         this.userRepository = userRepository;
     }
 
-    public Book registerBook(Book book, String email) {
+    public BookDto registerBook(BookDto book, String email) {
         book.setOwner(getUserByEmail(email));
         if (bookRepository.existsByIsbn(book.getIsbn())) {
             throw new BadRequestException(String.format("Book with ISBN: '%s' already exists in library.", book.getIsbn()));
         }
-        return bookRepository.save(book);
+        return bookRepository.save(book.toModel()).toDto();
     }
 
-    public Book borrowBook(Long bookId, String email) {
-        Book book = getBookById(bookId);
+    public BookDto borrowBook(Long bookId, String email) {
+        BookDto book = getBookById(bookId);
         if (book.getOwner() == null){
             throw new IllegalStateException();
         } else if (book.getBorrower() != null) {
@@ -40,39 +42,48 @@ public class BookService {
         }
         book.setBorrower(getUserByEmail(email));
         book.setReturnDate(LocalDate.now().plusMonths(1));
-        return bookRepository.save(book);
+        return bookRepository.save(book.toModel()).toDto();
     }
 
-    public Book returnBook(Long bookId, String email) {
-        Book book = getBookById(bookId);
+    public BookDto returnBook(Long bookId, String email) {
+        BookDto book = getBookById(bookId);
         if (book.getBorrower() == null || !book.getBorrower().getEmail().equals(email)) {
             throw new BadRequestException("Book is not borrowed by you.");
         }
         book.setBorrower(null);
         book.setReturnDate(null);
-        return bookRepository.save(book);
+        return bookRepository.save(book.toModel()).toDto();
     }
 
-    public List<Book> getOwned(String email) {
-        return bookRepository.getBooksByOwner(getUserByEmail(email));
+    public List<BookDto> getOwned(String email) {
+        return bookRepository.getBooksByOwnerEmail(email)
+                .stream()
+                .map(BookModel::toDto)
+                .collect(Collectors.toList());
     }
 
-    public List<Book> getBorrowed(String email) {
-        return bookRepository.getBooksByBorrower(getUserByEmail(email));
+    public List<BookDto> getBorrowed(String email) {
+        return bookRepository.getBooksByBorrowerEmail(email)
+                .stream()
+                .map(BookModel::toDto)
+                .collect(Collectors.toList());
     }
 
-    public List<Book> getAllAvailable(String email) {
-        return bookRepository.getAllAvailable(getUserByEmail(email).getId());
+    public List<BookDto> getAllAvailable(String email) {
+        return bookRepository.getAllAvailable(getUserByEmail(email).getId())
+                .stream()
+                .map(BookModel::toDto)
+                .collect(Collectors.toList());
     }
 
-    private User getUserByEmail(String email) {
+    private UserDto getUserByEmail(String email) {
         return userRepository.findByEmail(email)
-                .orElseThrow(() -> new BadRequestException("User does not exist."));
+                .orElseThrow(() -> new BadRequestException("User does not exist.")).toDto();
     }
 
-    private Book getBookById(Long bookId) {
+    private BookDto getBookById(Long bookId) {
         return bookRepository.findById(bookId)
-                .orElseThrow(() -> new BadRequestException("Book does not exist."));
+                .orElseThrow(() -> new BadRequestException("Book does not exist.")).toDto();
     }
 
 }

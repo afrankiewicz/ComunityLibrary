@@ -1,6 +1,6 @@
 package com.agular.hello;
 
-import com.agular.hello.entity.User;
+import com.agular.hello.DTO.UserDto;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.Before;
 import org.junit.Test;
@@ -32,7 +32,7 @@ public class UserControllerTest extends CommunityLibraryApplicationTests {
     @Test
     @WithMockUser(username = registeredUserEmail)
     public void shouldCreateUser() throws Exception {
-        User user = createUser(registeredUserEmail);
+        UserDto user = createUser(registeredUserEmail);
 
         mockMvc.perform(post("/users/register")
                         .contentType(MediaType.APPLICATION_JSON)

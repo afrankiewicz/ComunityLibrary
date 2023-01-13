@@ -1,6 +1,6 @@
 package com.agular.hello.security.filter;
 
-import com.agular.hello.entity.User;
+import com.agular.hello.entity.UserModel;
 import com.agular.hello.security.SecurityConstants;
 import com.agular.hello.security.manager.CustomAuthenticationManager;
 import com.auth0.jwt.JWT;
@@ -28,7 +28,7 @@ public class AuthenticationFilter extends UsernamePasswordAuthenticationFilter {
     @Override
     public Authentication attemptAuthentication(HttpServletRequest request, HttpServletResponse response) throws AuthenticationException {
         try {
-            User user = new ObjectMapper().readValue(request.getInputStream(), User.class);
+            UserModel user = new ObjectMapper().readValue(request.getInputStream(), UserModel.class);
             Authentication authentication = new UsernamePasswordAuthenticationToken(user.getEmail(), user.getPassword());
             return authenticationManager.authenticate(authentication);
         } catch (IOException e) {

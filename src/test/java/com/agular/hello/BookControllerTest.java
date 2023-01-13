@@ -1,6 +1,6 @@
 package com.agular.hello;
 
-import com.agular.hello.entity.BookModel;
+import com.agular.hello.DTO.BookDto;
 import com.agular.hello.service.BookService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import net.bytebuddy.utility.RandomString;
@@ -39,7 +39,7 @@ public class BookControllerTest extends CommunityLibraryApplicationTests {
     @WithMockUser(username = registeredUserEmail)
     public void shouldReturnOwnedBooks() throws Exception {
         createRegisteredUser(registeredUserEmail);
-        BookModel book = bookService.registerBook(createBook(), registeredUserEmail);
+        BookDto book = bookService.registerBook(createBook(), registeredUserEmail);
 
         mockMvc.perform(get("/books/owned"))
                 .andExpect(status().isOk())
@@ -51,9 +51,9 @@ public class BookControllerTest extends CommunityLibraryApplicationTests {
     @Test
     @WithMockUser(username = registeredUserEmail)
     public void shouldReturnBorrowedBooks() throws Exception {
-        BookModel book = bookService.registerBook(createBook(), createRegisteredUser().getEmail());
+        BookDto book = bookService.registerBook(createBook(), createRegisteredUser().getEmail());
         createRegisteredUser(registeredUserEmail);
-        BookModel borrowedBook = bookService.borrowBook(book.getId(), registeredUserEmail);
+        BookDto borrowedBook = bookService.borrowBook(book.getId(), registeredUserEmail);
 
         mockMvc.perform(get("/books/borrowed"))
                 .andExpect(status().isOk())
@@ -68,7 +68,7 @@ public class BookControllerTest extends CommunityLibraryApplicationTests {
         for (int i = 0; i < 5; i++) {
             bookService.registerBook(createBook(), createRegisteredUser().getEmail());
         }
-        BookModel book = bookService.registerBook(createBook(), createRegisteredUser().getEmail());
+        BookDto book = bookService.registerBook(createBook(), createRegisteredUser().getEmail());
         bookService.borrowBook(book.getId(), createRegisteredUser().getEmail());
 
         mockMvc.perform(get("/books/all"))
@@ -80,7 +80,7 @@ public class BookControllerTest extends CommunityLibraryApplicationTests {
     @WithMockUser(username = registeredUserEmail)
     public void shouldRegisterBook() throws Exception {
         createRegisteredUser(registeredUserEmail);
-        BookModel book = createBook();
+        BookDto book = createBook();
 
         mockMvc.perform(post("/books")
                         .contentType(MediaType.APPLICATION_JSON)
@@ -93,7 +93,7 @@ public class BookControllerTest extends CommunityLibraryApplicationTests {
     @WithMockUser(username = registeredUserEmail)
     public void shouldNotRegisterBookWhenNullValue() throws Exception {
         createRegisteredUser(registeredUserEmail);
-        BookModel book = new BookModel("", RandomString.make(), RandomString.make(), RandomString.make());
+        BookDto book = new BookDto("", RandomString.make(), RandomString.make(), RandomString.make());
 
         mockMvc.perform(post("/books")
                         .contentType(MediaType.APPLICATION_JSON)
@@ -105,7 +105,7 @@ public class BookControllerTest extends CommunityLibraryApplicationTests {
     @WithMockUser(username = registeredUserEmail)
     public void shouldBorrowBook() throws Exception {
         createRegisteredUser(registeredUserEmail);
-        BookModel registeredBook = createRegisteredBook();
+        BookDto registeredBook = createRegisteredBook();
 
         mockMvc.perform(put("/books/{bookId}/borrow", registeredBook.getId())
                         .contentType(MediaType.APPLICATION_JSON)
@@ -117,8 +117,8 @@ public class BookControllerTest extends CommunityLibraryApplicationTests {
     @WithMockUser(username = registeredUserEmail)
     public void shouldReturnBook() throws Exception {
         createRegisteredUser(registeredUserEmail);
-        BookModel registeredBook = createRegisteredBook();
-        BookModel borrowedBook = bookService.borrowBook(registeredBook.getId(), registeredUserEmail);
+        BookDto registeredBook = createRegisteredBook();
+        BookDto borrowedBook = bookService.borrowBook(registeredBook.getId(), registeredUserEmail);
 
         mockMvc.perform(put("/books/{bookId}/return", registeredBook.getId())
                         .contentType(MediaType.APPLICATION_JSON)
