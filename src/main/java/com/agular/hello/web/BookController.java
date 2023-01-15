@@ -3,7 +3,6 @@ package com.agular.hello.web;
 import com.agular.hello.DTO.BookDto;
 import com.agular.hello.service.BookService;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -21,32 +20,38 @@ public class BookController {
     }
 
     @PostMapping()
-    public ResponseEntity<BookDto> registerBook(@Valid @RequestBody BookDto book, Principal principal) {
-        return new ResponseEntity<>(bookService.registerBook(book, principal.getName()), HttpStatus.CREATED);
+    @ResponseStatus(HttpStatus.CREATED)
+    public BookDto registerBook(@Valid @RequestBody BookDto book, Principal principal) {
+        return bookService.registerBook(book, principal.getName());
     }
 
     @GetMapping("/owned")
-    public ResponseEntity<List<BookDto>> getOwned(Principal principal) {
-        return new ResponseEntity<>(bookService.getOwned(principal.getName()), HttpStatus.OK);
+    @ResponseStatus(HttpStatus.OK)
+    public List<BookDto> getOwned(Principal principal) {
+        return bookService.getOwned(principal.getName());
     }
 
     @GetMapping("/borrowed")
-    public ResponseEntity<List<BookDto>> getBorrowed(Principal principal) {
-        return new ResponseEntity<>(bookService.getBorrowed(principal.getName()), HttpStatus.OK);
+    @ResponseStatus(HttpStatus.OK)
+    public List<BookDto> getBorrowed(Principal principal) {
+        return bookService.getBorrowed(principal.getName());
     }
 
     @GetMapping("/all")
-    public ResponseEntity<List<BookDto>> getAll(Principal principal) {
-        return new ResponseEntity<>(bookService.getAllAvailable(principal.getName()), HttpStatus.OK);
+    @ResponseStatus(HttpStatus.OK)
+    public List<BookDto> getAll(Principal principal) {
+        return bookService.getAllAvailable(principal.getName());
     }
 
     @PutMapping("{bookId}/borrow")
-    public ResponseEntity<BookDto> borrowBookByUser(@Valid @PathVariable Long bookId, Principal principal) {
-        return new ResponseEntity<>(bookService.borrowBook(bookId, principal.getName()), HttpStatus.OK);
+    @ResponseStatus(HttpStatus.OK)
+    public BookDto borrowBookByUser(@Valid @PathVariable Long bookId, Principal principal) {
+        return bookService.borrowBook(bookId, principal.getName());
     }
 
     @PutMapping("{bookId}/return")
-    public ResponseEntity<BookDto> returnBookByUser(@Valid @PathVariable Long bookId, Principal principal) {
-        return new ResponseEntity<>(bookService.returnBook(bookId, principal.getName()), HttpStatus.OK);
+    @ResponseStatus(HttpStatus.OK)
+    public BookDto returnBookByUser(@Valid @PathVariable Long bookId, Principal principal) {
+        return bookService.returnBook(bookId, principal.getName());
     }
 }

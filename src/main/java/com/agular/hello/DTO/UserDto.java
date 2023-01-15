@@ -1,6 +1,7 @@
 package com.agular.hello.DTO;
 
 import com.agular.hello.entity.UserModel;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
@@ -20,6 +21,7 @@ public class UserDto {
     private String email;
 
     @NotBlank(message = "Password must be provided")
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private String password;
 
     @NotBlank(message = "Street must be provided")
