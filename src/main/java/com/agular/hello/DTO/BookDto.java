@@ -53,8 +53,8 @@ public class BookDto {
         this.borrower = borrower;
     }
 
-    public BookModel toModel(){
-        UserModel borrower = this.borrower != null ? this.borrower.toModel(): null;
+    public BookModel toModel() {
+        UserModel borrower = this.borrower != null ? this.borrower.toModel() : null;
         return new BookModel(id, isbn, title, author, language, returnDate, owner.toModel(), borrower);
     }
 

@@ -14,7 +14,9 @@ import java.time.LocalDate;
 public class CommentService {
 
     CommentRepository commentRepository;
+
     UserRepository userRepository;
+
     UserService userService;
 
     public CommentService(CommentRepository commentRepository, UserRepository userRepository, UserService userService) {
@@ -38,7 +40,7 @@ public class CommentService {
     public CommentDto updateComment(CommentDto commentDto, Long commentId, String authorEmail) {
         Long authorId = userService.getUserByEmail(authorEmail).getId();
         int updatedCommentNo = commentRepository.updateCommentText(commentDto.getText(), commentId, authorId);
-        if (updatedCommentNo != 0){
+        if (updatedCommentNo != 0) {
             return getComment(commentId);
         } else {
             throw new BadRequestException("Comment was not updated");
@@ -52,5 +54,4 @@ public class CommentService {
         }
         commentRepository.deleteById(commentId);
     }
-
 }

@@ -17,7 +17,7 @@ import java.util.Map;
 public class ApplicationExceptionHandler {
 
     @ExceptionHandler(BadRequestException.class)
-    public ResponseEntity<Object> handleBadRequestException(RuntimeException ex){
+    public ResponseEntity<Object> handleBadRequestException(RuntimeException ex) {
         ErrorResponse errorResponse = new ErrorResponse(ex.getMessage());
         return new ResponseEntity<>(errorResponse, HttpStatus.BAD_REQUEST);
     }

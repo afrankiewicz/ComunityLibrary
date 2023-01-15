@@ -13,8 +13,9 @@ public class BookServiceTest extends CommunityLibraryApplicationTests {
     @Autowired
     BookService bookService;
 
+
     @Test
-    public void shouldRegisterBook(){
+    public void shouldRegisterBook() {
         BookDto book = bookService.registerBook(createBook(), createRegisteredUser().getEmail());
 
         Assert.assertNotNull(book.getOwner());
@@ -22,7 +23,7 @@ public class BookServiceTest extends CommunityLibraryApplicationTests {
     }
 
     @Test(expected = BadRequestException.class)
-    public void shouldNotRegisterBook(){
+    public void shouldNotRegisterBook() {
         BookDto book = createRegisteredBook();
         BookDto book2 = new BookDto(book.getIsbn(), RandomString.make(),
                 RandomString.make(), RandomString.make());
@@ -31,7 +32,7 @@ public class BookServiceTest extends CommunityLibraryApplicationTests {
     }
 
     @Test
-    public void shouldBorrowBook(){
+    public void shouldBorrowBook() {
         BookDto registeredBook = createRegisteredBook();
 
         BookDto borrowedBook = bookService.borrowBook(registeredBook.getId(), createRegisteredUser().getEmail());
@@ -56,7 +57,7 @@ public class BookServiceTest extends CommunityLibraryApplicationTests {
     }
 
     @Test
-    public void shouldReturnBook(){
+    public void shouldReturnBook() {
         BookDto registeredBook = createRegisteredBook();
         BookDto borrowedBook = bookService.borrowBook(registeredBook.getId(), createRegisteredUser().getEmail());
 

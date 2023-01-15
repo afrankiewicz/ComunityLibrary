@@ -4,8 +4,8 @@ import com.agular.hello.DTO.UserDto;
 
 import javax.persistence.*;
 
-@Table(name = "users")
 @Entity
+@Table(name = "users")
 public class UserModel {
 
     @Id
@@ -53,7 +53,7 @@ public class UserModel {
         this.city = city;
     }
 
-    public UserDto toDto(){
+    public UserDto toDto() {
         return new UserDto(id, firstName, lastName, email, password, street, city);
     }
 

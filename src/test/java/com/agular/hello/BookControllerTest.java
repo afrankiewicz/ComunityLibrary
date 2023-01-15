@@ -25,8 +25,10 @@ public class BookControllerTest extends CommunityLibraryApplicationTests {
 
     @Autowired
     private BookService bookService;
+
     @Autowired
     private MockMvc mockMvc;
+
     @Autowired
     private ObjectMapper objectMapper;
 

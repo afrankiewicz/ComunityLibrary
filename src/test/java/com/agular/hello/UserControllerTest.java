@@ -21,6 +21,7 @@ public class UserControllerTest extends CommunityLibraryApplicationTests {
 
     @Autowired
     private MockMvc mockMvc;
+
     @Autowired
     private ObjectMapper objectMapper;
 
@@ -39,5 +40,4 @@ public class UserControllerTest extends CommunityLibraryApplicationTests {
                         .content(objectMapper.writeValueAsString(user)))
                 .andExpect(status().isCreated());
     }
-
 }

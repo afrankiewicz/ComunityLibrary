@@ -14,36 +14,40 @@ import org.springframework.test.context.junit4.SpringRunner;
 @RunWith(SpringRunner.class)
 class CommunityLibraryApplicationTests {
 
-	@Autowired
-	UserRepository userRepository;
-	@Autowired
-	BookRepository bookRepository;
+    @Autowired
+    UserRepository userRepository;
 
-	protected final String registeredUserEmail = "test@testmail.com";
+    @Autowired
+    BookRepository bookRepository;
 
-	public void cleanupDb(){
-		bookRepository.deleteAll();
-		userRepository.deleteAll();
-	}
-	public UserDto createUser(String email){
-		return new UserDto(RandomString.make(), RandomString.make(), email,
-				RandomString.make(), RandomString.make(), RandomString.make());
-	}
-	public UserDto createRegisteredUser(){
-		return userRepository.save(createUser(RandomString.make() + "@gmail.com").toModel()).toDto();
-	}
+    protected final String registeredUserEmail = "test@testmail.com";
 
-	public UserDto createRegisteredUser(String email){
-		return userRepository.save(createUser(email).toModel()).toDto();
-	}
-	public BookDto createBook(){
-		return new BookDto(RandomString.make(), RandomString.make(), RandomString.make(),
-				RandomString.make());
-	}
+    public void cleanupDb() {
+        bookRepository.deleteAll();
+        userRepository.deleteAll();
+    }
 
-	public BookDto createRegisteredBook(){
-		BookDto book = createBook();
-		book.setOwner(createRegisteredUser());
-		return bookRepository.save(book.toModel()).toDto();
-	}
+    public UserDto createUser(String email) {
+        return new UserDto(RandomString.make(), RandomString.make(), email,
+                RandomString.make(), RandomString.make(), RandomString.make());
+    }
+
+    public UserDto createRegisteredUser() {
+        return userRepository.save(createUser(RandomString.make() + "@gmail.com").toModel()).toDto();
+    }
+
+    public UserDto createRegisteredUser(String email) {
+        return userRepository.save(createUser(email).toModel()).toDto();
+    }
+
+    public BookDto createBook() {
+        return new BookDto(RandomString.make(), RandomString.make(), RandomString.make(),
+                RandomString.make());
+    }
+
+    public BookDto createRegisteredBook() {
+        BookDto book = createBook();
+        book.setOwner(createRegisteredUser());
+        return bookRepository.save(book.toModel()).toDto();
+    }
 }

@@ -7,7 +7,6 @@ import org.junit.Assert;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
-
 public class UserServiceTest extends CommunityLibraryApplicationTests {
 
     @Autowired
@@ -21,7 +20,7 @@ public class UserServiceTest extends CommunityLibraryApplicationTests {
     }
 
     @Test(expected = BadRequestException.class)
-    public void shouldNotAddUserWhenEmailAlreadyUsed(){
+    public void shouldNotAddUserWhenEmailAlreadyUsed() {
         UserDto user = createRegisteredUser();
 
         userService.addUser(user);

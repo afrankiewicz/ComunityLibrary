@@ -31,7 +31,7 @@ public class CommentDto {
         this.text = text;
     }
 
-    public CommentModel toModel(){
+    public CommentModel toModel() {
         return new CommentModel(id, reviewDate, author.toModel(), reviewee.toModel(), text);
     }
 

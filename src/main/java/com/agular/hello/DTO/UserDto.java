@@ -50,7 +50,7 @@ public class UserDto {
         this.city = city;
     }
 
-    public UserModel toModel(){
+    public UserModel toModel() {
         return new UserModel(id, firstName, lastName, email, password, street, city);
     }
 

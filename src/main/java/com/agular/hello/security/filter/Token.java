@@ -1,6 +1,7 @@
 package com.agular.hello.security.filter;
 
 public class Token {
+
     private String token;
 
     public Token(String token) {

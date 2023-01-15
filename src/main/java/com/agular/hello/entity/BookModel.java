@@ -6,9 +6,10 @@ import com.agular.hello.DTO.UserDto;
 import javax.persistence.*;
 import java.time.LocalDate;
 
-@Table(name = "books")
 @Entity
+@Table(name = "books")
 public class BookModel {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
@@ -59,7 +60,7 @@ public class BookModel {
     }
 
     public BookDto toDto() {
-        UserDto borrower = this.borrower != null ? this.borrower.toDto(): null;
+        UserDto borrower = this.borrower != null ? this.borrower.toDto() : null;
         return new BookDto(id, isbn, title, author, language, returnDate, owner.toDto(), borrower);
     }
 
