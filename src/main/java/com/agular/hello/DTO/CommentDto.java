@@ -13,26 +13,26 @@ public class CommentDto {
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
     private LocalDate reviewDate;
 
+    @NotBlank(message = "Comment must be provided")
+    private String text;
+
     private UserDto author;
 
     private UserDto reviewee;
 
-    @NotBlank(message = "Comment must be provided")
-    private String text;
-
     public CommentDto() {
     }
 
-    public CommentDto(Long id, LocalDate reviewDate, UserDto author, UserDto reviewee, String text) {
+    public CommentDto(Long id, LocalDate reviewDate, String text, UserDto author, UserDto reviewee) {
         this.id = id;
         this.reviewDate = reviewDate;
+        this.text = text;
         this.author = author;
         this.reviewee = reviewee;
-        this.text = text;
     }
 
     public CommentModel toModel() {
-        return new CommentModel(id, reviewDate, author.toModel(), reviewee.toModel(), text);
+        return new CommentModel(id, reviewDate, text, author.toModel(), reviewee.toModel());
     }
 
     public Long getId() {

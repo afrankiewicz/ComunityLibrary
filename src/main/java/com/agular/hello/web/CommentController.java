@@ -1,5 +1,6 @@
 package com.agular.hello.web;
 
+import com.agular.hello.DTO.AddCommentRequest;
 import com.agular.hello.DTO.CommentDto;
 import com.agular.hello.service.CommentService;
 import org.springframework.http.HttpStatus;
@@ -20,30 +21,30 @@ public class CommentController {
 
     @PostMapping("/reviewee/{revieweeId}")
     @ResponseStatus(value = HttpStatus.CREATED)
-    public CommentDto createComment(@Valid @RequestBody CommentDto commentDto,
-                                    @Valid @PathVariable Long revieweeId,
+    public CommentDto createComment(@Valid @RequestBody AddCommentRequest commentRequest,
+                                    @PathVariable Long revieweeId,
                                     Principal principal) {
-        return commentService.addComment(commentDto, revieweeId, principal.getName());
+        return commentService.addComment(commentRequest.getText(), revieweeId, principal.getName());
 
     }
 
     @GetMapping("{commentId}")
     @ResponseStatus(value = HttpStatus.OK)
-    public CommentDto getComment(@Valid @PathVariable Long commentId, Principal principal) {
+    public CommentDto getComment(@PathVariable Long commentId, Principal principal) {
         return commentService.getComment(commentId);
     }
 
     @PutMapping("{commentId}")
     @ResponseStatus(value = HttpStatus.OK)
-    public CommentDto updateComment(@Valid @RequestBody CommentDto commentDto,
-                                    @Valid @PathVariable Long commentId,
+    public CommentDto updateComment(@Valid @RequestBody AddCommentRequest commentRequest,
+                                    @PathVariable Long commentId,
                                     Principal principal) {
-        return commentService.updateComment(commentDto, commentId, principal.getName());
+        return commentService.updateComment(commentRequest.getText(), commentId, principal.getName());
     }
 
     @DeleteMapping("{commentId}")
     @ResponseStatus(value = HttpStatus.NO_CONTENT)
-    public void deleteComment(@Valid @PathVariable Long commentId,
+    public void deleteComment(@PathVariable Long commentId,
                               Principal principal) {
         commentService.deleteComment(commentId, principal.getName());
     }

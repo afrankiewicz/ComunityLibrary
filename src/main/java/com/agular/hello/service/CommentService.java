@@ -25,25 +25,32 @@ public class CommentService {
         this.userService = userService;
     }
 
-    public CommentDto addComment(CommentDto commentDto, Long revieweeId, String authorEmail) {
+    public CommentDto addComment(String commentText, Long revieweeId, String authorEmail) {
         UserDto author = userService.getUserByEmail(authorEmail);
         UserDto reviewee = userService.getUser(revieweeId);
-        CommentModel comment = new CommentModel(null, LocalDate.now(), author.toModel(), reviewee.toModel(), commentDto.getText());
+
+        if (authorEmail.equals(reviewee.getEmail())){
+            throw new BadRequestException("You can not review yourself.");
+        } else if (commentRepository.findByAuthorIdAndRevieweeId(author.getId(), revieweeId) != null) {
+            throw new BadRequestException("You already commented on this user.");
+        }
+        CommentModel comment = new CommentModel(null, LocalDate.now(), commentText, author.toModel(),
+                reviewee.toModel());
         return commentRepository.save(comment).toDto();
     }
 
     public CommentDto getComment(Long commentId) {
         return commentRepository.findById(commentId)
-                .orElseThrow(() -> new BadRequestException("Comment not found")).toDto();
+                .orElseThrow(() -> new BadRequestException("Comment not found.")).toDto();
     }
 
-    public CommentDto updateComment(CommentDto commentDto, Long commentId, String authorEmail) {
+    public CommentDto updateComment(String commentText, Long commentId, String authorEmail) {
         Long authorId = userService.getUserByEmail(authorEmail).getId();
-        int updatedCommentNo = commentRepository.updateCommentText(commentDto.getText(), commentId, authorId);
+        int updatedCommentNo = commentRepository.updateCommentText(commentText, commentId, authorId);
         if (updatedCommentNo != 0) {
             return getComment(commentId);
         } else {
-            throw new BadRequestException("Comment was not updated");
+            throw new BadRequestException("Comment was not updated.");
         }
     }
 

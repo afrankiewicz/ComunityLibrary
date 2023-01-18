@@ -10,6 +10,8 @@ import org.springframework.transaction.annotation.Transactional;
 @Repository
 public interface CommentRepository extends CrudRepository<CommentModel, Long> {
 
+    CommentModel findByAuthorIdAndRevieweeId(Long authorId, Long revieweeId);
+
     @Modifying
     @Transactional
     @Query(value = "UPDATE comments SET text = ?1 WHERE id = ?2 AND author_id = ?3",

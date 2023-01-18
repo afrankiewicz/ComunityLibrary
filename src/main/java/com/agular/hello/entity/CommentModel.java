@@ -15,28 +15,28 @@ public class CommentModel {
 
     private LocalDate reviewDate;
 
+    @Column(columnDefinition = "TEXT")
+    private String text;
+
     @ManyToOne
     private UserModel author;
 
     @ManyToOne
     private UserModel reviewee;
 
-    @Column(columnDefinition = "TEXT")
-    private String text;
-
     public CommentModel() {
     }
 
-    public CommentModel(Long id, LocalDate reviewDate, UserModel author, UserModel reviewee, String text) {
+    public CommentModel(Long id, LocalDate reviewDate, String text, UserModel author, UserModel reviewee) {
         this.id = id;
         this.reviewDate = reviewDate;
+        this.text = text;
         this.author = author;
         this.reviewee = reviewee;
-        this.text = text;
     }
 
     public CommentDto toDto() {
-        return new CommentDto(id, reviewDate, author.toDto(), reviewee.toDto(), text);
+        return new CommentDto(id, reviewDate, text, author.toDto(), reviewee.toDto());
     }
 
     public Long getId() {

@@ -1,18 +1,23 @@
 package com.agular.hello;
 
 import com.agular.hello.DTO.BookDto;
+import com.agular.hello.DTO.CommentDto;
 import com.agular.hello.DTO.UserDto;
 import com.agular.hello.repositiry.BookRepository;
+import com.agular.hello.repositiry.CommentRepository;
 import com.agular.hello.repositiry.UserRepository;
 import net.bytebuddy.utility.RandomString;
+import org.junit.Before;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
+import java.time.LocalDate;
+
 @SpringBootTest
 @RunWith(SpringRunner.class)
-class CommunityLibraryApplicationTests {
+public class CommunityLibraryApplicationTests {
 
     @Autowired
     UserRepository userRepository;
@@ -20,11 +25,20 @@ class CommunityLibraryApplicationTests {
     @Autowired
     BookRepository bookRepository;
 
+    @Autowired
+    CommentRepository commentRepository;
+
     protected final String registeredUserEmail = "test@testmail.com";
 
     public void cleanupDb() {
+        commentRepository.deleteAll();
         bookRepository.deleteAll();
         userRepository.deleteAll();
+    }
+
+    @Before
+    public void setup() {
+        cleanupDb();
     }
 
     public UserDto createUser(String email) {
@@ -49,5 +63,23 @@ class CommunityLibraryApplicationTests {
         BookDto book = createBook();
         book.setOwner(createRegisteredUser());
         return bookRepository.save(book.toModel()).toDto();
+    }
+
+    public CommentDto createComment() {
+        return new CommentDto(null, LocalDate.now(), RandomString.make(), createRegisteredUser(),
+                createRegisteredUser());
+    }
+
+    public CommentDto createComment(String authorEmail) {
+        return new CommentDto(null, LocalDate.now(), RandomString.make(), createRegisteredUser(authorEmail),
+                createRegisteredUser());
+    }
+
+    public CommentDto createRegisteredComment() {
+        return commentRepository.save(createComment().toModel()).toDto();
+    }
+
+    public CommentDto createRegisteredComment(String authorEmail) {
+        return commentRepository.save(createComment(authorEmail).toModel()).toDto();
     }
 }
