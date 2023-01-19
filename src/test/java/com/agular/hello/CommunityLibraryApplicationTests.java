@@ -4,6 +4,7 @@ import com.agular.hello.DTO.BookDto;
 import com.agular.hello.DTO.CommentDto;
 import com.agular.hello.DTO.UserDto;
 import com.agular.hello.repositiry.BookRepository;
+import com.agular.hello.repositiry.CommentLikeRepository;
 import com.agular.hello.repositiry.CommentRepository;
 import com.agular.hello.repositiry.UserRepository;
 import net.bytebuddy.utility.RandomString;
@@ -28,9 +29,13 @@ public class CommunityLibraryApplicationTests {
     @Autowired
     CommentRepository commentRepository;
 
+    @Autowired
+    CommentLikeRepository commentLikeRepository;
+
     protected final String registeredUserEmail = "test@testmail.com";
 
     public void cleanupDb() {
+        commentLikeRepository.deleteAll();
         commentRepository.deleteAll();
         bookRepository.deleteAll();
         userRepository.deleteAll();
