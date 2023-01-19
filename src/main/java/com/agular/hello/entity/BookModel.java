@@ -12,30 +12,26 @@ public class BookModel {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id")
     private Long id;
 
-    @Column(name = "isbn", nullable = false, unique = true)
+    @Column(nullable = false, unique = true)
     private String isbn;
 
-    @Column(name = "title", nullable = false)
+    @Column(nullable = false)
     private String title;
 
-    @Column(name = "author", nullable = false)
+    @Column(nullable = false)
     private String author;
 
-    @Column(name = "language", nullable = false)
+    @Column(nullable = false)
     private String language;
 
-    @Column(name = "return_date")
     private LocalDate returnDate;
 
     @ManyToOne
-    @JoinColumn(name = "owner_id", referencedColumnName = "id")
     private UserModel owner;
 
     @ManyToOne
-    @JoinColumn(name = "borrower_id", referencedColumnName = "id")
     private UserModel borrower;
 
     public BookModel() {
@@ -48,7 +44,8 @@ public class BookModel {
         this.language = language;
     }
 
-    public BookModel(Long id, String isbn, String title, String author, String language, LocalDate returnDate, UserModel owner, UserModel borrower) {
+    public BookModel(Long id, String isbn, String title, String author, String language, LocalDate returnDate,
+                     UserModel owner, UserModel borrower) {
         this.id = id;
         this.isbn = isbn;
         this.title = title;

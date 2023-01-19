@@ -4,7 +4,6 @@ import com.agular.hello.DTO.BookDto;
 import com.agular.hello.service.BookService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import net.bytebuddy.utility.RandomString;
-import org.junit.Before;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -31,11 +30,6 @@ public class BookControllerTest extends CommunityLibraryApplicationTests {
 
     @Autowired
     private ObjectMapper objectMapper;
-
-    @Before
-    public void setup() {
-        cleanupDb();
-    }
 
     @Test
     @WithMockUser(username = registeredUserEmail)

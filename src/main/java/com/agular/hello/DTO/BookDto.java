@@ -42,7 +42,8 @@ public class BookDto {
         this.language = language;
     }
 
-    public BookDto(Long id, String isbn, String title, String author, String language, LocalDate returnDate, UserDto owner, UserDto borrower) {
+    public BookDto(Long id, String isbn, String title, String author, String language, LocalDate returnDate,
+                   UserDto owner, UserDto borrower) {
         this.id = id;
         this.isbn = isbn;
         this.title = title;

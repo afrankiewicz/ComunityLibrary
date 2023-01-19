@@ -5,7 +5,6 @@ import com.agular.hello.DTO.UserDto;
 import com.agular.hello.entity.CommentModel;
 import com.agular.hello.exceptions.BadRequestException;
 import com.agular.hello.repositiry.CommentRepository;
-import com.agular.hello.repositiry.UserRepository;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
@@ -15,13 +14,10 @@ public class CommentService {
 
     CommentRepository commentRepository;
 
-    UserRepository userRepository;
-
     UserService userService;
 
-    public CommentService(CommentRepository commentRepository, UserRepository userRepository, UserService userService) {
+    public CommentService(CommentRepository commentRepository, UserService userService) {
         this.commentRepository = commentRepository;
-        this.userRepository = userRepository;
         this.userService = userService;
     }
 

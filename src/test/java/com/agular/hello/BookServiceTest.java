@@ -13,7 +13,6 @@ public class BookServiceTest extends CommunityLibraryApplicationTests {
     @Autowired
     BookService bookService;
 
-
     @Test
     public void shouldRegisterBook() {
         BookDto book = bookService.registerBook(createBook(), createRegisteredUser().getEmail());

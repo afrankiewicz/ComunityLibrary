@@ -38,7 +38,10 @@ public class CommentControllerTest extends CommunityLibraryApplicationTests {
         mockMvc.perform(post("/comments/reviewee/{revieweeId}", reviewee.getId())
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(commentRequest)))
-                .andExpect(status().isCreated());
+                .andExpect(status().isCreated())
+                .andExpect(jsonPath("$.author.email").value(registeredUserEmail))
+                .andExpect(jsonPath("$.reviewee.id").value(reviewee.getId()))
+                .andExpect(jsonPath("$.text").value(commentRequest.getText()));
     }
 
     @Test
