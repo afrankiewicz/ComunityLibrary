@@ -1,6 +1,8 @@
 package com.agular.hello.service;
 
+import com.agular.hello.DTO.AvailableBook;
 import com.agular.hello.DTO.BookDto;
+import com.agular.hello.DTO.UserDto;
 import com.agular.hello.entity.BookModel;
 import com.agular.hello.exceptions.BadRequestException;
 import com.agular.hello.repositiry.BookRepository;
@@ -48,11 +50,36 @@ public class BookService {
                 .collect(Collectors.toList());
     }
 
-    public List<BookDto> getAllAvailable(String email) {
-        return bookRepository.getAllAvailable(userService.getUserByEmail(email).getId())
+    public List<AvailableBook> getAllAvailable(String email) {
+        UserDto borrower = userService.getUserByEmail(email);
+        List<BookModel> books = bookRepository.getAllAvailable(borrower.getId());
+
+        return books
                 .stream()
-                .map(BookModel::toDto)
+                .map(book -> {
+                    UserDto owner = book.getOwner().toDto();
+                    double distance = distance(borrower.getCityLatitude(), owner.getCityLatitude(),
+                            borrower.getCityLongitude(), owner.getCityLongitude());
+                    return new AvailableBook(book.toDto(), distance);
+                })
                 .collect(Collectors.toList());
+    }
+
+    private double distance(double lat1, double lat2, double lon1, double lon2) {
+
+        final int R = 6371;
+
+        double latDistance = Math.toRadians(lat2 - lat1);
+        double lonDistance = Math.toRadians(lon2 - lon1);
+        double a = Math.sin(latDistance / 2) * Math.sin(latDistance / 2)
+                + Math.cos(Math.toRadians(lat1)) * Math.cos(Math.toRadians(lat2))
+                * Math.sin(lonDistance / 2) * Math.sin(lonDistance / 2);
+        double c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+        double distance = R * c * 1000;
+
+        distance = Math.pow(distance, 2);
+
+        return Math.sqrt(distance);
     }
 
     private BookDto getBookById(Long bookId) {

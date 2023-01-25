@@ -13,16 +13,27 @@ public class UserService {
 
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
 
-    public UserService(UserRepository userRepository, BCryptPasswordEncoder bCryptPasswordEncoder) {
+    private GeolocationService geolocationService;
+
+    public UserService(UserRepository userRepository, BCryptPasswordEncoder bCryptPasswordEncoder, GeolocationService geolocationService) {
         this.userRepository = userRepository;
         this.bCryptPasswordEncoder = bCryptPasswordEncoder;
+        this.geolocationService = geolocationService;
     }
 
     public UserDto addUser(UserDto user) {
         if (userRepository.existsByEmail(user.getEmail())) {
             throw new BadRequestException(String.format("User with email: '%s' already exists.", user.getEmail()));
         }
+
         user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
+
+        geolocationService.getCoordinates(user.getCity())
+                .ifPresent(cord -> {
+                    user.setCityLongitude(cord.getLat());
+                    user.setCityLatitude(cord.getLat());
+                });
+
         return userRepository.save(user.toModel()).toDto();
     }
 

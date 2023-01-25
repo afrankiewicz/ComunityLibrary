@@ -30,6 +30,10 @@ public class UserDto {
     @NotBlank(message = "City must be provided")
     private String city;
 
+    private Double cityLatitude;
+
+    private Double cityLongitude;
+
     public UserDto() {
     }
 
@@ -42,7 +46,7 @@ public class UserDto {
         this.city = city;
     }
 
-    public UserDto(Long id, String firstName, String lastName, String email, String password, String street, String city) {
+    public UserDto(Long id, String firstName, String lastName, String email, String password, String street, String city, Double cityLatitude, Double cityLongitude) {
         this.id = id;
         this.firstName = firstName;
         this.lastName = lastName;
@@ -50,10 +54,12 @@ public class UserDto {
         this.password = password;
         this.street = street;
         this.city = city;
+        this.cityLatitude = cityLatitude;
+        this.cityLongitude = cityLongitude;
     }
 
     public UserModel toModel() {
-        return new UserModel(id, firstName, lastName, email, password, street, city);
+        return new UserModel(id, firstName, lastName, email, password, street, city, cityLatitude, cityLongitude);
     }
 
     public Long getId() {
@@ -110,5 +116,21 @@ public class UserDto {
 
     public void setCity(String city) {
         this.city = city;
+    }
+
+    public Double getCityLatitude() {
+        return cityLatitude;
+    }
+
+    public void setCityLatitude(Double cityLatitude) {
+        this.cityLatitude = cityLatitude;
+    }
+
+    public Double getCityLongitude() {
+        return cityLongitude;
+    }
+
+    public void setCityLongitude(Double cityLongitude) {
+        this.cityLongitude = cityLongitude;
     }
 }

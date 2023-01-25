@@ -30,19 +30,24 @@ public class UserModel {
     @Column(nullable = false)
     private String city;
 
+    private Double cityLatitude;
+
+    private Double cityLongitude;
     public UserModel() {
     }
 
-    public UserModel(String firstName, String lastName, String email, String password, String street, String city) {
+    public UserModel(String firstName, String lastName, String email, String password, String street, String city, Double cityLatitude, Double cityLongitude) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.email = email;
         this.password = password;
         this.street = street;
         this.city = city;
+        this.cityLatitude = cityLatitude;
+        this.cityLongitude = cityLongitude;
     }
 
-    public UserModel(Long id, String firstName, String lastName, String email, String password, String street, String city) {
+    public UserModel(Long id, String firstName, String lastName, String email, String password, String street, String city, Double cityLatitude, Double cityLongitude) {
         this.id = id;
         this.firstName = firstName;
         this.lastName = lastName;
@@ -50,10 +55,12 @@ public class UserModel {
         this.password = password;
         this.street = street;
         this.city = city;
+        this.cityLatitude = cityLatitude;
+        this.cityLongitude = cityLongitude;
     }
 
     public UserDto toDto() {
-        return new UserDto(id, firstName, lastName, email, password, street, city);
+        return new UserDto(id, firstName, lastName, email, password, street, city, cityLatitude, cityLongitude);
     }
 
     public Long getId() {
@@ -110,5 +117,21 @@ public class UserModel {
 
     public void setCity(String city) {
         this.city = city;
+    }
+
+    public Double getCityLatitude() {
+        return cityLatitude;
+    }
+
+    public void setCityLatitude(Double cityLatitude) {
+        this.cityLatitude = cityLatitude;
+    }
+
+    public Double getCityLongitude() {
+        return cityLongitude;
+    }
+
+    public void setCityLongitude(Double cityLongitude) {
+        this.cityLongitude = cityLongitude;
     }
 }

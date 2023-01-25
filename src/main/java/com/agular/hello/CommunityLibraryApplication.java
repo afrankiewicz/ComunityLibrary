@@ -33,9 +33,15 @@ public class CommunityLibraryApplication {
     @PostConstruct
     void insert() {
         List<UserModel> users = Arrays.asList(
-                new UserModel("Agata", "Kowalska", "agata.kowalska@gmail.com", new BCryptPasswordEncoder().encode("123"), "Szewska", "Warszawa"),
-                new UserModel("Mateusz", "Nowak", "mat.nowak@gmail.com", new BCryptPasswordEncoder().encode("456"), "Marszałkowska", "Warszawa"),
-                new UserModel("Jan", "Burak", "jan.burak@gmail.com", new BCryptPasswordEncoder().encode("456"), "Zachodnia", "Warszawa")
+                new UserModel("Agata", "Kowalska", "agata.kowalska@gmail.com",
+                        new BCryptPasswordEncoder().encode("123"), "Szewska", "Warszawa",
+                        52.237049, 21.017532),
+                new UserModel("Mateusz", "Nowak", "mat.nowak@gmail.com",
+                        new BCryptPasswordEncoder().encode("456"), "Marszałkowska", "Warszawa",
+                        52.237049, 21.017532),
+                new UserModel("Jan", "Burak", "jan.burak@gmail.com",
+                        new BCryptPasswordEncoder().encode("456"), "Zachodnia", "Wroclaw",
+                        51.107883, 17.038538)
         );
         userRepository.saveAll(users);
 

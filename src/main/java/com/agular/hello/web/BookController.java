@@ -1,5 +1,6 @@
 package com.agular.hello.web;
 
+import com.agular.hello.DTO.AvailableBook;
 import com.agular.hello.DTO.BookDto;
 import com.agular.hello.service.BookService;
 import org.springframework.http.HttpStatus;
@@ -39,7 +40,7 @@ public class BookController {
 
     @GetMapping("/all")
     @ResponseStatus(HttpStatus.OK)
-    public List<BookDto> getAll(Principal principal) {
+    public List<AvailableBook> getAll(Principal principal) {
         return bookService.getAllAvailable(principal.getName());
     }
 
