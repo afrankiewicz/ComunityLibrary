@@ -1,7 +1,7 @@
 package com.agular.hello;
 
-import com.agular.hello.exceptions.BadRequestException;
-import com.agular.hello.exceptions.ErrorResponse;
+import com.agular.hello.shared.exceptions.BadRequestException;
+import com.agular.hello.shared.exceptions.ErrorResponse;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.FieldError;
@@ -33,7 +33,7 @@ public class ApplicationExceptionHandler {
     }
 
     @ExceptionHandler(Exception.class)
-    public ResponseEntity<Object> handleOtherExceptions(Exception ex){
+    public ResponseEntity<Object> handleOtherExceptions(){
         ErrorResponse errorResponse = new ErrorResponse("Something went wrong.");
         return new ResponseEntity<>(errorResponse, HttpStatus.INTERNAL_SERVER_ERROR);
     }

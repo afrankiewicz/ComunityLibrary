@@ -1,12 +1,13 @@
 package com.agular.hello;
 
-import com.agular.hello.DTO.BookDto;
-import com.agular.hello.DTO.CommentDto;
-import com.agular.hello.DTO.UserDto;
-import com.agular.hello.repositiry.BookRepository;
-import com.agular.hello.repositiry.CommentLikeRepository;
-import com.agular.hello.repositiry.CommentRepository;
-import com.agular.hello.repositiry.UserRepository;
+import com.agular.hello.book.BookDto;
+import com.agular.hello.comment.CommentDto;
+import com.agular.hello.user.AddUserRequest;
+import com.agular.hello.user.UserDto;
+import com.agular.hello.book.BookRepository;
+import com.agular.hello.commentLike.CommentLikeRepository;
+import com.agular.hello.comment.CommentRepository;
+import com.agular.hello.user.UserRepository;
 import net.bytebuddy.utility.RandomString;
 import org.junit.Before;
 import org.junit.runner.RunWith;
@@ -18,19 +19,19 @@ import java.time.LocalDate;
 
 @SpringBootTest
 @RunWith(SpringRunner.class)
-public class CommunityLibraryApplicationTests {
+public abstract class CommunityLibraryApplicationTests {
 
     @Autowired
-    UserRepository userRepository;
+    private UserRepository userRepository;
 
     @Autowired
-    BookRepository bookRepository;
+    private BookRepository bookRepository;
 
     @Autowired
-    CommentRepository commentRepository;
+    private CommentRepository commentRepository;
 
     @Autowired
-    CommentLikeRepository commentLikeRepository;
+    private CommentLikeRepository commentLikeRepository;
 
     protected final String registeredUserEmail = "test@testmail.com";
 
@@ -48,7 +49,7 @@ public class CommunityLibraryApplicationTests {
 
     public UserDto createUser(String email) {
         return new UserDto(RandomString.make(), RandomString.make(), email,
-                RandomString.make(), RandomString.make(), RandomString.make());
+                RandomString.make(), RandomString.make(), RandomString.make(),Math.random(),Math.random());
     }
 
     public UserDto createRegisteredUser() {
@@ -57,6 +58,11 @@ public class CommunityLibraryApplicationTests {
 
     public UserDto createRegisteredUser(String email) {
         return userRepository.save(createUser(email).toModel()).toDto();
+    }
+
+    public AddUserRequest createAddUserRequest(String email) {
+        return new AddUserRequest(RandomString.make(), RandomString.make(), email,
+                RandomString.make(), RandomString.make(), RandomString.make());
     }
 
     public BookDto createBook() {

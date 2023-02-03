@@ -1,9 +1,9 @@
 package com.agular.hello;
 
-import com.agular.hello.entity.BookModel;
-import com.agular.hello.entity.UserModel;
-import com.agular.hello.repositiry.BookRepository;
-import com.agular.hello.repositiry.UserRepository;
+import com.agular.hello.book.BookModel;
+import com.agular.hello.user.UserModel;
+import com.agular.hello.book.BookRepository;
+import com.agular.hello.user.UserRepository;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
@@ -17,9 +17,9 @@ import java.util.List;
 @SpringBootApplication
 public class CommunityLibraryApplication {
 
-    UserRepository userRepository;
+    private final UserRepository userRepository;
 
-    BookRepository bookRepository;
+    private final BookRepository bookRepository;
 
     public CommunityLibraryApplication(UserRepository userRepository, BookRepository bookRepository) {
         this.userRepository = userRepository;
@@ -28,6 +28,11 @@ public class CommunityLibraryApplication {
 
     public static void main(String[] args) {
         SpringApplication.run(CommunityLibraryApplication.class, args);
+    }
+
+    @Bean
+    public BCryptPasswordEncoder bCryptPasswordEncoder() {
+        return new BCryptPasswordEncoder();
     }
 
     @PostConstruct
@@ -76,10 +81,5 @@ public class CommunityLibraryApplication {
         books.get(books.size() - 2).setBorrower(users.get(0));
         books.get(books.size() - 2).setReturnDate(LocalDate.now().plusMonths(1));
         bookRepository.saveAll(books);
-    }
-
-    @Bean
-    public BCryptPasswordEncoder bCryptPasswordEncoder() {
-        return new BCryptPasswordEncoder();
     }
 }
