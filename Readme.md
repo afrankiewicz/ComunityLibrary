@@ -1,13 +1,13 @@
-
-<img src="src/images/logo.png" width="300">
-
+<p align="center">
+    <img src="src/images/logo.png" width="400">
+</p>
 
 ## About the Poject
 Community Library goal is to enable neighbours to borrow books from each other. 
-Idea behind the project was to make use of books that everyone has siting on shelfs, while making positive environmental impact and bringing communities together.
+Idea behind the project was to make use of books that everyone has sitting on shelves, while making positive environmental impact and bringing communities together.
 
 Comly API enables:
-* creating your own virtual library
+* adding books to virtual library
 * searching for books available to borrow nearby
 * leaving reviews to the users
 * liking reviews
