@@ -45,4 +45,10 @@ public class UserService {
         return userRepository.findByEmail(email)
                 .orElseThrow(() -> new BadRequestException("User not found")).toDto();
     }
+
+    public String getPasswordByEmail(String email) {
+        return userRepository.findByEmail(email)
+                .orElseThrow(() -> new BadRequestException("User not found"))
+                .getPassword();
+    }
 }

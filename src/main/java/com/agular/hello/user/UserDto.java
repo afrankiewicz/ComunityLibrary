@@ -1,11 +1,14 @@
 package com.agular.hello.user;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 public class UserDto {
 
     private Long id;
     private String firstName;
     private String lastName;
     private String email;
+    @JsonIgnore
     private String password;
     private String street;
     private String city;
