@@ -1,12 +1,13 @@
 package com.agular.hello.shared.security.filter;
 
+import com.agular.hello.shared.security.SecurityConstants;
 import com.agular.hello.shared.security.manager.CustomAuthenticationManager;
 import com.agular.hello.user.UserModel;
-import com.agular.hello.shared.security.SecurityConstants;
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.gson.Gson;
+import org.springframework.http.MediaType;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
@@ -18,14 +19,17 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.nio.charset.StandardCharsets;
 import java.util.Date;
 
 public class AuthenticationFilter extends UsernamePasswordAuthenticationFilter {
 
     private final CustomAuthenticationManager authenticationManager;
+    private final String jwtSecretKey;
 
-    public AuthenticationFilter(CustomAuthenticationManager authenticationManager) {
+    public AuthenticationFilter(CustomAuthenticationManager authenticationManager, String jwtSecretKey) {
         this.authenticationManager = authenticationManager;
+        this.jwtSecretKey = jwtSecretKey;
     }
 
     @Override
@@ -44,11 +48,11 @@ public class AuthenticationFilter extends UsernamePasswordAuthenticationFilter {
         String token = JWT.create()
                 .withSubject(authResult.getName())
                 .withExpiresAt(new Date(System.currentTimeMillis() + SecurityConstants.TOKEN_EXPIRATION))
-                .sign(Algorithm.HMAC512(SecurityConstants.SECRET_KEY));
+                .sign(Algorithm.HMAC512(jwtSecretKey));
         String tokenString = new Gson().toJson(new Token(token));
         PrintWriter out = response.getWriter();
-        response.setContentType("application/json");
-        response.setCharacterEncoding("UTF-8");
+        response.setContentType(MediaType.APPLICATION_JSON_VALUE);
+        response.setCharacterEncoding(StandardCharsets.UTF_8.name());
         out.print(tokenString);
         out.flush();
     }
