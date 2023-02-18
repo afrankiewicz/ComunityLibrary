@@ -1,5 +1,6 @@
 package com.agular.hello.shared.exceptions;
 
+//todo ta klasa nie jest exceptionem tylko dto na error
 public class ErrorResponse {
 
     private String message;

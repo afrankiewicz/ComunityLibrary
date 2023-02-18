@@ -40,11 +40,10 @@ public class CommentService {
     public CommentDto updateComment(String commentText, Long commentId, String authorEmail) {
         Long authorId = userService.getUserByEmail(authorEmail).getId();
         int updatedCommentNo = commentRepository.updateCommentText(commentText, commentId, authorId);
-        if (updatedCommentNo != 0) {
-            return getComment(commentId);
-        } else {
+        if (updatedCommentNo == 0) {
             throw new BadRequestException("Comment was not updated.");
         }
+        return getComment(commentId);
     }
 
     public void deleteComment(Long commentId, String authorEmail) {

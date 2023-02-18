@@ -1,7 +1,5 @@
-package com.agular.hello;
+package com.agular.hello.shared.exceptions;
 
-import com.agular.hello.shared.exceptions.BadRequestException;
-import com.agular.hello.shared.exceptions.ErrorResponse;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.FieldError;
