@@ -13,9 +13,16 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.util.Arrays;
+import java.util.Collections;
 
 public class JWTAuthorizationFilter extends OncePerRequestFilter {
+
+    private final String jwtSecretKey;
+
+    public JWTAuthorizationFilter(String jwtSecretKey) {
+        this.jwtSecretKey = jwtSecretKey;
+    }
+
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
 
@@ -26,11 +33,11 @@ public class JWTAuthorizationFilter extends OncePerRequestFilter {
         }
 
         String token = header.replace(SecurityConstants.BEARER, "");
-        String user = JWT.require(Algorithm.HMAC512(SecurityConstants.SECRET_KEY))
+        String user = JWT.require(Algorithm.HMAC512(jwtSecretKey))
                 .build()
                 .verify(token)
                 .getSubject();
-        Authentication authentication = new UsernamePasswordAuthenticationToken(user, null, Arrays.asList());
+        Authentication authentication = new UsernamePasswordAuthenticationToken(user, null, Collections.emptyList());
         SecurityContextHolder.getContext().setAuthentication(authentication);
         filterChain.doFilter(request, response);
     }
