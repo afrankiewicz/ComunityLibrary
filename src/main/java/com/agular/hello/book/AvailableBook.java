@@ -1,17 +1,15 @@
 package com.agular.hello.book;
 
-import com.agular.hello.geolocation.DistanceUnit;
-
 public class AvailableBook {
 
     private BookDto book;
-    private double distance;
+    private Double distance;
     private DistanceUnit distanceUnit;
 
-    public AvailableBook(BookDto book, double distance) {
+    public AvailableBook(BookDto book, Distance distance) {
         this.book = book;
-        this.distance = distance;
-        this.distanceUnit = DistanceUnit.METER;
+        this.distance = distance.getValue();
+        this.distanceUnit = distance.getUnit();
     }
 
     public BookDto getBook() {

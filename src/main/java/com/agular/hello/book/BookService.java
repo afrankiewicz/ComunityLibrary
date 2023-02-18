@@ -50,7 +50,7 @@ public class BookService {
                 .stream()
                 .map(book -> {
                     UserDto owner = book.getOwner().toDto();
-                    Double distance = calculateDistance(borrower.getCityLatitude(), owner.getCityLatitude(),
+                    Distance distance = calculateDistance(borrower.getCityLatitude(), owner.getCityLatitude(),
                             borrower.getCityLongitude(), owner.getCityLongitude());
                     return new AvailableBook(book.toDto(), distance);
                 })
@@ -86,7 +86,7 @@ public class BookService {
                 .orElseThrow(() -> new BadRequestException("Book does not exist.")).toDto();
     }
 
-    private Double calculateDistance(Double lat1, Double lat2, Double lon1, Double lon2) {
+    private Distance calculateDistance(Double lat1, Double lat2, Double lon1, Double lon2) {
         if (lat1 == null || lat2 == null || lon1 == null || lon2 == null) {
             return null;
         }
@@ -102,6 +102,6 @@ public class BookService {
 
         distance = Math.pow(distance, 2);
 
-        return Math.sqrt(distance);
+        return new Distance(DistanceUnit.METER, Math.sqrt(distance));
     }
 }
