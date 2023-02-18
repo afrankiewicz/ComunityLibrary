@@ -1,4 +1,4 @@
-package com.agular.hello.geolocation;
+package com.agular.hello.book;
 
 public enum DistanceUnit {
     METER
