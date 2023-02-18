@@ -1,5 +1,6 @@
 package com.agular.hello.book;
 
+import com.agular.hello.shared.Time;
 import com.agular.hello.user.UserDto;
 import com.agular.hello.user.UserModel;
 import com.fasterxml.jackson.annotation.JsonFormat;
@@ -24,7 +25,7 @@ public class BookDto {
     @NotBlank(message = "Book language must be provided")
     private String language;
 
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = Time.DATE_PATTERN)
     private LocalDate returnDate;
 
     private UserDto owner;
