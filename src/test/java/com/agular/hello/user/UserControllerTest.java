@@ -4,6 +4,7 @@ import com.agular.hello.CommunityLibraryApplicationTests;
 import com.agular.hello.geolocation.GeolocationService;
 import com.agular.hello.geolocation.GeolocationServiceResponse;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import net.bytebuddy.utility.RandomString;
 import org.junit.Test;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -39,7 +40,8 @@ public class UserControllerTest extends CommunityLibraryApplicationTests {
         GeolocationServiceResponse geolocation = new GeolocationServiceResponse(
                 "Warsaw", 1234, 3456, "Poland");
         Mockito.when(geolocationService.getCoordinates("Warsaw")).thenReturn(Optional.of(geolocation));
-        UserDto user = createUser(registeredUserEmail);
+        AddUserRequest user = new AddUserRequest(RandomString.make(), RandomString.make(),
+                registeredUserEmail, RandomString.make(), RandomString.make(), RandomString.make());
 
         mockMvc.perform(post("/users/register")
                         .contentType(MediaType.APPLICATION_JSON)

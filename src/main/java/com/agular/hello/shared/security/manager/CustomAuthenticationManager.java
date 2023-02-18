@@ -1,6 +1,5 @@
 package com.agular.hello.shared.security.manager;
 
-import com.agular.hello.user.UserDto;
 import com.agular.hello.user.UserService;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
@@ -23,10 +22,11 @@ public class CustomAuthenticationManager implements AuthenticationManager {
 
     @Override
     public Authentication authenticate(Authentication authentication) throws AuthenticationException {
-        UserDto user = userService.getUserByEmail(authentication.getName());
-        if (!bCryptPasswordEncoder.matches(authentication.getCredentials().toString(), user.getPassword())) {
+        String email = authentication.getName();
+        String password = userService.getPasswordByEmail(email);
+        if (!bCryptPasswordEncoder.matches(authentication.getCredentials().toString(), password)) {
             throw new BadCredentialsException("Username or password invalid");
         }
-        return new UsernamePasswordAuthenticationToken(user.getEmail(), user.getPassword());
+        return new UsernamePasswordAuthenticationToken(email, password);
     }
 }
