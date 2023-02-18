@@ -1,6 +1,7 @@
 package com.agular.hello.commentLike;
 
 import com.agular.hello.comment.CommentDto;
+import com.agular.hello.shared.Time;
 import com.agular.hello.user.UserDto;
 import com.fasterxml.jackson.annotation.JsonFormat;
 
@@ -10,7 +11,7 @@ public class CommentLikeDto {
 
     private Long id;
 
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'")
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = Time.DATE_TIME_PATTERN)
     private LocalDateTime dateTime;
 
     private CommentDto comment;

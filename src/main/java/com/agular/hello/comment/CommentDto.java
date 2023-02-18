@@ -1,5 +1,6 @@
 package com.agular.hello.comment;
 
+import com.agular.hello.shared.Time;
 import com.agular.hello.user.UserDto;
 import com.fasterxml.jackson.annotation.JsonFormat;
 
@@ -10,7 +11,7 @@ public class CommentDto {
 
     private Long id;
 
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = Time.DATE_PATTERN)
     private LocalDate reviewDate;
 
     @NotBlank(message = "Comment must be provided")
