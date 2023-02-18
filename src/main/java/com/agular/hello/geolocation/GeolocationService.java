@@ -15,7 +15,7 @@ import java.util.Optional;
 @Service
 public class GeolocationService {
 
-    private RestTemplate restTemplate;
+    private final RestTemplate restTemplate;
 
     @Value( "${geolocation.url}" )
     private String url;
